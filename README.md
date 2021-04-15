@@ -7,3 +7,4 @@ demo shows how to capture video data from camera in macos and ios platform.
 4. 配置采集的帧率，分辨率， iOS支持高帧率采集
 5. 通过AVSampleBufferDisplayLayer来预览采集的数据
 6. iOS处理响应采集打断与恢复，运行错误等
+7. macOS 处理采集设备插拔事件

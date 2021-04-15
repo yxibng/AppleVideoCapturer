@@ -81,6 +81,7 @@ static AVCaptureVideoOrientation videoOrientation() {
     if (@available(iOS 11.0, *)) {
         [self removeObserver:self forKeyPath:@"videoDeviceInput.device.systemPressureState"];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -130,6 +131,16 @@ static AVCaptureVideoOrientation videoOrientation() {
                    selector:@selector(handleCaptureSessionDidStopRunning:)
                        name:AVCaptureSessionDidStopRunningNotification
                      object:self.session];
+        [center addObserver:self
+                   selector:@selector(deviceConnectNotification:)
+                       name:AVCaptureDeviceWasConnectedNotification
+                     object:nil];
+        [center addObserver:self
+                   selector:@selector(deviceDisconnectNotification:)
+                       name:AVCaptureDeviceWasDisconnectedNotification
+                     object:nil];
+        
+        
         /*
          Check video authorization status. Video access is required and audio
          access is optional. If audio access is denied, audio is not recorded
@@ -421,5 +432,29 @@ static AVCaptureVideoOrientation videoOrientation() {
         [self.delegate videoCapturerDidStop:self];
     }
 }
+
+- (void)deviceConnectNotification:(NSNotification *)notification
+{
+    AVCaptureDevice *device = notification.object;
+    NSLog(@"device conenct, id: %@, name: %@", device.uniqueID, device.localizedName);
+}
+
+- (void)deviceDisconnectNotification:(NSNotification *)notification
+{
+    AVCaptureDevice *device = notification.object;
+    
+    if ([device.uniqueID isEqualTo:self.videoDeviceInput.device.uniqueID]) {
+        
+        //找到下一个采集设备
+        AVCaptureDevice *next = [VideoCapturerUtil videoCaptureDeviceWithPosition:AVCaptureDevicePositionFront];
+        if (next) {
+            [self changeCaptureDevice:next];
+        }
+    }
+    
+    
+
+}
+
 
 @end
