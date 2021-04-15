@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGSize videoSize;
 //默认，前置摄像头
 @property (nonatomic, assign) AVCaptureDevicePosition devicePositon;
-//是否镜像， 默认是镜像
+//是否镜像， 默认是镜像, macOS可以设置，但是不生效
 @property (nonatomic, assign) BOOL mirror;
 @end
 

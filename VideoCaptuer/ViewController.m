@@ -37,10 +37,10 @@
     }
     
     VideoConifg *config = [[VideoConifg alloc] init];
-    config.videoSize = CGSizeMake(1280, 720);
-    config.devicePositon = AVCaptureDevicePositionUnspecified;
+    config.videoSize = CGSizeMake(640, 360);
+    config.devicePositon = AVCaptureDevicePositionFront;
     config.fps = 15;
-    config.mirror = NO;
+    config.mirror = YES;
 
     _videoCapturer = [[VideoCapturer alloc] initWithConfig:config delegate:self];
     [_videoCapturer changeCaptureDevice:device];
@@ -85,6 +85,14 @@
 - (void)videoCapturer:(VideoCapturer *)capturer didGotSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     [self.displayView displayPixelBuffer:pixelBuffer];
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    int width = CVPixelBufferGetWidth(pixelBuffer);
+    int height = CVPixelBufferGetHeight(pixelBuffer);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 1);
+    
+    NSLog(@"output width = %d, height = %d", width, height);
+    
 }
 
 

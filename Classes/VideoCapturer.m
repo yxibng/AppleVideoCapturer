@@ -206,6 +206,10 @@ static AVCaptureVideoOrientation videoOrientation() {
     AVCaptureVideoDataOutput *dataOutput = [[AVCaptureVideoDataOutput alloc] init];
     [dataOutput setSampleBufferDelegate:self queue:self.sampleBufferCallbackQueue];
 #if TARGET_OS_OSX
+    /*
+     参考：https://stackoverflow.com/questions/15608931/mac-osx-avfoundation-video-capture
+     例如 target 640*360, 此时只能采集(640*480)，这里设置了之后，会真正输出 640*360
+     */
     NSDictionary *settings = @{(NSString *)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange),
                                (NSString *)kCVPixelBufferWidthKey : @(self.videoConfig.videoSize.width),
                                (NSString *)kCVPixelBufferHeightKey : @(self.videoConfig.videoSize.height)
@@ -233,7 +237,7 @@ static AVCaptureVideoOrientation videoOrientation() {
     if (connection.supportsVideoOrientation) {
         connection.videoOrientation = self.videoOrientation;
     }
-    
+    //设置镜像模式， macOS 支持，但是不生效
     if (connection.supportsVideoMirroring) {
         connection.videoMirrored = self.videoConfig.mirror;
     }
@@ -296,7 +300,7 @@ static AVCaptureVideoOrientation videoOrientation() {
         if (connection.supportsVideoOrientation) {
             connection.videoOrientation = self.videoOrientation;
         }
-        //更新镜像模式
+        //更新镜像模式， macOS 支持，但是不生效
         if (connection.supportsVideoMirroring) {
             connection.videoMirrored = self.videoConfig.mirror;
         }

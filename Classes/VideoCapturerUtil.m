@@ -108,11 +108,11 @@ const Float64 kFramerateLimit = 60.0;
         minDuration = CMTimeMake(1, (int32_t)expetedFrameRate);
         maxDuration = CMTimeMake(1, (int32_t)expetedFrameRate);
     }
-    
-    NSLog(@"range = %@, real max rate = %f, min rate = %f",range, 1.0/CMTimeGetSeconds(minDuration), 1.0/CMTimeGetSeconds(maxDuration));
+    CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
+    NSLog(@"format size = (%d,%d) , range = %@, real max rate = %f, min rate = %f", dimension.width, dimension.height, range, 1.0/CMTimeGetSeconds(minDuration), 1.0/CMTimeGetSeconds(maxDuration));
     
     if ([captureDevice lockForConfiguration:nil]) {
-        //设置activeFormat，此时 session 的preset 会自动改为 AVCaptureSessionPresetInputPriority
+        //设置activeFormat，此时 iOS session 的preset 会自动改为 AVCaptureSessionPresetInputPriority
         captureDevice.activeFormat = format;
         captureDevice.activeVideoMaxFrameDuration = minDuration;
         captureDevice.activeVideoMinFrameDuration = maxDuration;
