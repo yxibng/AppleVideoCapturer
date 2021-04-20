@@ -443,7 +443,7 @@ static AVCaptureVideoOrientation videoOrientation() {
 {
     AVCaptureDevice *device = notification.object;
     
-    if ([device.uniqueID isEqualTo:self.videoDeviceInput.device.uniqueID]) {
+    if ([device.uniqueID isEqualToString:self.videoDeviceInput.device.uniqueID]) {
         
         //找到下一个采集设备
         AVCaptureDevice *next = [VideoCapturerUtil videoCaptureDeviceWithPosition:AVCaptureDevicePositionFront];
