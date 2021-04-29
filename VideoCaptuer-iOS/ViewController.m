@@ -9,10 +9,16 @@
 #import "VideoCapturer.h"
 #import "VideoDisplayView.h"
 #import "VideoCapturerUtil.h"
+#import "MetalViewoRenderer.h"
+
+#define  USE_METAL 1
 
 @interface ViewController ()<VideoCaptuerDelegate>
 @property (weak, nonatomic) IBOutlet VideoDisplayView *displayView;
 @property (nonatomic, strong) VideoCapturer *videoCapturer;
+
+@property (nonatomic, strong) MetalViewoRenderer *metalVideoRenderer;
+
 @end
 
 @implementation ViewController
@@ -26,6 +32,14 @@
     config.mirror = NO;
     config.devicePositon = AVCaptureDevicePositionBack;
     _videoCapturer = [[VideoCapturer alloc] initWithConfig:config delegate:self];
+    
+    
+    _metalVideoRenderer = [[MetalViewoRenderer alloc] init];
+    _metalVideoRenderer.canvas = self.view;
+    
+    self.displayView.hidden = YES;
+    
+    
 }
 
 - (IBAction)startCapturing:(id)sender {
@@ -57,7 +71,12 @@
 }
 - (void)videoCapturer:(VideoCapturer *)capturer didGotSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+#if USE_METAL
+    [self.metalVideoRenderer displayPixelBuffer:pixelBuffer];
+#else
+    self.displayView.hidden = NO;
     [self.displayView displayPixelBuffer:pixelBuffer];
+#endif
 }
 
 @end
