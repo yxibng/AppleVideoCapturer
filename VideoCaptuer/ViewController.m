@@ -9,12 +9,19 @@
 #import "VideoCapturerUtil.h"
 #import "VideoCapturer.h"
 #import "VideoDisplayView.h"
+#import "MetalVideoRenderer.h"
+#define  USE_METAL 1
+
 
 @interface ViewController()<VideoCaptuerDelegate>
 @property (weak) IBOutlet NSPopUpButton *camerasPopUpButton;
 @property (nonatomic, strong) NSArray<AVCaptureDevice *> *cameras;
 @property (nonatomic, strong) VideoCapturer *videoCapturer;
 @property (weak) IBOutlet VideoDisplayView *displayView;
+
+@property (nonatomic, strong) MetalVideoRenderer *metalVideoRenderer;
+
+
 @end
 @implementation ViewController
 
@@ -45,6 +52,11 @@
     _videoCapturer = [[VideoCapturer alloc] initWithConfig:config delegate:self];
     [_videoCapturer changeCaptureDevice:device];
     // Do any additional setup after loading the view.
+    
+    _metalVideoRenderer = [[MetalVideoRenderer alloc] init];
+    _metalVideoRenderer.canvas = self.view;
+    
+    self.displayView.hidden = YES;
 }
 
 
@@ -84,7 +96,12 @@
 }
 - (void)videoCapturer:(VideoCapturer *)capturer didGotSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+#if USE_METAL
+    [self.metalVideoRenderer displayPixelBuffer:pixelBuffer];
+#else
+    self.displayView.hidden = NO;
     [self.displayView displayPixelBuffer:pixelBuffer];
+#endif
     
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
     int width = CVPixelBufferGetWidth(pixelBuffer);
@@ -92,6 +109,10 @@
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 1);
     
     NSLog(@"output width = %d, height = %d", width, height);
+    
+    
+    
+    
     
 }
 

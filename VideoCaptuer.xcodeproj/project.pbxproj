@@ -22,6 +22,19 @@
 		86232E32263A486900CFD9B0 /* SGMetalViewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E25263A486900CFD9B0 /* SGMetalViewport.m */; };
 		86232E37263A557600CFD9B0 /* MetalVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E36263A557600CFD9B0 /* MetalVideoRenderer.m */; };
 		86232E38263A557600CFD9B0 /* MetalVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E36263A557600CFD9B0 /* MetalVideoRenderer.m */; };
+		86232E3F263A8DAA00CFD9B0 /* SGMetalBGRARenderPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E15263A486900CFD9B0 /* SGMetalBGRARenderPipeline.m */; };
+		86232E40263A8DAC00CFD9B0 /* SGMetalModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E0D263A486900CFD9B0 /* SGMetalModel.m */; };
+		86232E41263A8DAE00CFD9B0 /* SGMetalNV12RenderPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E0E263A486900CFD9B0 /* SGMetalNV12RenderPipeline.m */; };
+		86232E42263A8DB100CFD9B0 /* SGMetalPlaneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E12263A486900CFD9B0 /* SGMetalPlaneModel.m */; };
+		86232E43263A8DB400CFD9B0 /* SGMetalProjection.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E14263A486900CFD9B0 /* SGMetalProjection.m */; };
+		86232E44263A8DC200CFD9B0 /* SGMetalYUVRenderPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E10263A486900CFD9B0 /* SGMetalYUVRenderPipeline.m */; };
+		86232E45263A8DC200CFD9B0 /* SGMetalRenderPipelinePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E0B263A486900CFD9B0 /* SGMetalRenderPipelinePool.m */; };
+		86232E46263A8DC200CFD9B0 /* SGMetalSphereModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E08263A486900CFD9B0 /* SGMetalSphereModel.m */; };
+		86232E47263A8DC200CFD9B0 /* SGMetalShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 86232E22263A486900CFD9B0 /* SGMetalShader.metal */; };
+		86232E48263A8DC200CFD9B0 /* SGMetalRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E21263A486900CFD9B0 /* SGMetalRenderer.m */; };
+		86232E49263A8DC200CFD9B0 /* SGMetalRenderPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E11263A486900CFD9B0 /* SGMetalRenderPipeline.m */; };
+		86232E4A263A8DC200CFD9B0 /* SGMetalTextureLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E0C263A486900CFD9B0 /* SGMetalTextureLoader.m */; };
+		86232E4B263A8DC200CFD9B0 /* SGMetalViewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 86232E25263A486900CFD9B0 /* SGMetalViewport.m */; };
 		8636F3D6262570B9006B04E6 /* VideoDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8636F3D5262570B9006B04E6 /* VideoDisplayView.m */; };
 		8636F3D7262570B9006B04E6 /* VideoDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8636F3D5262570B9006B04E6 /* VideoDisplayView.m */; };
 		869ACC6E262544B4006871C0 /* VideoCapturerUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 86A891D6261EDF0C00A1FD5D /* VideoCapturerUtil.m */; };
@@ -354,13 +367,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86232E43263A8DB400CFD9B0 /* SGMetalProjection.m in Sources */,
 				86232E38263A557600CFD9B0 /* MetalVideoRenderer.m in Sources */,
 				86A891D2261EDA1800A1FD5D /* VideoCapturer.m in Sources */,
+				86232E41263A8DAE00CFD9B0 /* SGMetalNV12RenderPipeline.m in Sources */,
+				86232E46263A8DC200CFD9B0 /* SGMetalSphereModel.m in Sources */,
+				86232E4A263A8DC200CFD9B0 /* SGMetalTextureLoader.m in Sources */,
 				8636F3D7262570B9006B04E6 /* VideoDisplayView.m in Sources */,
 				86A891BE261ED9F700A1FD5D /* ViewController.m in Sources */,
 				86A891B8261ED9F700A1FD5D /* AppDelegate.m in Sources */,
+				86232E47263A8DC200CFD9B0 /* SGMetalShader.metal in Sources */,
+				86232E49263A8DC200CFD9B0 /* SGMetalRenderPipeline.m in Sources */,
+				86232E3F263A8DAA00CFD9B0 /* SGMetalBGRARenderPipeline.m in Sources */,
 				86A891C9261ED9F700A1FD5D /* main.m in Sources */,
+				86232E4B263A8DC200CFD9B0 /* SGMetalViewport.m in Sources */,
+				86232E48263A8DC200CFD9B0 /* SGMetalRenderer.m in Sources */,
+				86232E42263A8DB100CFD9B0 /* SGMetalPlaneModel.m in Sources */,
 				869ACC6E262544B4006871C0 /* VideoCapturerUtil.m in Sources */,
+				86232E44263A8DC200CFD9B0 /* SGMetalYUVRenderPipeline.m in Sources */,
+				86232E40263A8DAC00CFD9B0 /* SGMetalModel.m in Sources */,
+				86232E45263A8DC200CFD9B0 /* SGMetalRenderPipelinePool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

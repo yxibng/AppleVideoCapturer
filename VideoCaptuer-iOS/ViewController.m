@@ -9,7 +9,7 @@
 #import "VideoCapturer.h"
 #import "VideoDisplayView.h"
 #import "VideoCapturerUtil.h"
-#import "MetalViewoRenderer.h"
+#import "MetalVideoRenderer.h"
 
 #define  USE_METAL 1
 
@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet VideoDisplayView *displayView;
 @property (nonatomic, strong) VideoCapturer *videoCapturer;
 
-@property (nonatomic, strong) MetalViewoRenderer *metalVideoRenderer;
+@property (nonatomic, strong) MetalVideoRenderer *metalVideoRenderer;
 
 @end
 
@@ -34,7 +34,7 @@
     _videoCapturer = [[VideoCapturer alloc] initWithConfig:config delegate:self];
     
     
-    _metalVideoRenderer = [[MetalViewoRenderer alloc] init];
+    _metalVideoRenderer = [[MetalVideoRenderer alloc] init];
     _metalVideoRenderer.canvas = self.view;
     
     self.displayView.hidden = YES;

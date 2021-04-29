@@ -43,9 +43,9 @@
 
 - (SGMetalRenderPipeline *)pipelineWithCVPixelFormat:(OSType)pixpelFormat
 {
-    if (pixpelFormat == kCVPixelFormatType_420YpCbCr8Planar) {
+    if (pixpelFormat == kCVPixelFormatType_420YpCbCr8Planar || pixpelFormat == kCVPixelFormatType_420YpCbCr8PlanarFullRange) {
         return self.yuv;
-    } else if (pixpelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+    } else if (pixpelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange || pixpelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
         return self.nv12;
     } else if (pixpelFormat == kCVPixelFormatType_32BGRA) {
         return self.bgra;

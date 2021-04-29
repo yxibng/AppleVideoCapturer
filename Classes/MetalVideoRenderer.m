@@ -20,6 +20,8 @@
 
 @property (nonatomic) CVPixelBufferRef pixelBuffer;
 
+@property (nonatomic, strong) NSMutableArray *pixelBuffers;
+
 @end
 @implementation MetalVideoRenderer
 
@@ -48,7 +50,9 @@
     
     _lock = [[NSLock alloc] init];
     
-    _gravity = AVLayerVideoGravityResize;
+    _gravity = AVLayerVideoGravityResizeAspect;
+
+    _pixelBuffers = [NSMutableArray new];
 }
 
 - (void)setCanvas:(VIEW_CLASS *)canvas {
@@ -59,6 +63,11 @@
     }
     
     [canvas addSubview:self.metalView];
+    
+#if TARGET_OS_IOS
+    [canvas sendSubviewToBack:self.metalView];
+#endif
+    
     NSLayoutConstraint *c1 = [NSLayoutConstraint constraintWithItem:self->_metalView
                                                           attribute:NSLayoutAttributeTop
                                                           relatedBy:NSLayoutRelationEqual
@@ -100,11 +109,10 @@
         return;
     }
     [self.lock lock];
-    CVPixelBufferRetain(pixelBuffer);
-    self.pixelBuffer = pixelBuffer;
-    [self.metalView draw];
-    CVPixelBufferRelease(pixelBuffer);
+    [self.pixelBuffers addObject:(__bridge id)pixelBuffer];
     [self.lock unlock];
+    [self.metalView draw];
+
 }
 
 
@@ -126,18 +134,22 @@ SGMetalViewportMode SGScaling2Viewport(AVLayerVideoGravity gravity) {
 
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
-    
-    CVPixelBufferRef buffer = self.pixelBuffer;
+    [self.lock lock];
+    CVPixelBufferRef buffer = (__bridge CVPixelBufferRef)(self.pixelBuffers.firstObject);
     if (!buffer) {
+        [self.lock unlock];
         return;
     }
+    
     int width = (int)CVPixelBufferGetWidth(buffer);
     int height = (int)CVPixelBufferGetHeight(buffer);
     OSType cv_format = CVPixelBufferGetPixelFormatType(buffer);
-    GLKMatrix4 baseMatrix = GLKMatrix4Identity;
+    GLKMatrix4 baseMatrix = GLKMatrix4Identity;    
     NSArray<id<MTLTexture>> *textures = [self->_textureLoader texturesWithCVPixelBuffer:buffer];
     
     if (!textures.count) {
+        [self.pixelBuffers removeObjectAtIndex:0];
+        [self.lock unlock];
         return;
     }
     
@@ -146,8 +158,13 @@ SGMetalViewportMode SGScaling2Viewport(AVLayerVideoGravity gravity) {
     CGSize drawableSize = [self->_metalView drawableSize];
     id <CAMetalDrawable> drawable = [self->_metalView currentDrawable];
     if (drawableSize.width == 0 || drawableSize.height == 0) {
+        [self.pixelBuffers removeObjectAtIndex:0];
+        [self.lock unlock];
         return;
     }
+    
+    
+    
     
     MTLSize textureSize = MTLSizeMake(width, height, 0);
     MTLSize layerSize = MTLSizeMake(drawable.texture.width, drawable.texture.height, 0);
@@ -167,6 +184,8 @@ SGMetalViewportMode SGScaling2Viewport(AVLayerVideoGravity gravity) {
         [commandBuffer presentDrawable:drawable];
         [commandBuffer commit];
     }
+    [self.pixelBuffers removeObjectAtIndex:0];
+    [self.lock unlock];
 }
 
 @end

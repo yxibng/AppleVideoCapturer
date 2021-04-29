@@ -42,7 +42,7 @@
     CVMetalTextureRef texture;
     NSMutableArray *textures = [NSMutableArray array];
     OSType formatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
-    if (formatType == kCVPixelFormatType_420YpCbCr8Planar) {
+    if (formatType == kCVPixelFormatType_420YpCbCr8Planar || formatType == kCVPixelFormatType_420YpCbCr8PlanarFullRange) {
         for (NSUInteger i = 0; i < 3; i++) {
             CVMetalTextureCacheCreateTextureFromImage(NULL,
                                                       self.textureCache,
@@ -57,7 +57,7 @@
             CVBufferRelease(texture);
             texture = NULL;
         }
-    } else if (formatType == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+    } else if (formatType == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange || formatType == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
         MTLPixelFormat formats[2] = {MTLPixelFormatR8Unorm, MTLPixelFormatRG8Unorm};
         for (NSUInteger i = 0; i < 2; i++) {
             CVMetalTextureCacheCreateTextureFromImage(NULL,
@@ -100,7 +100,7 @@
     NSUInteger widths[channelCount] = {0};
     NSUInteger heights[channelCount] = {0};
     MTLPixelFormat formats[channelCount] = {0};
-    if (pixelFormat == kCVPixelFormatType_420YpCbCr8Planar) {
+    if (pixelFormat == kCVPixelFormatType_420YpCbCr8Planar || pixelFormat == kCVPixelFormatType_420YpCbCr8PlanarFullRange) {
         planes = 3;
         widths[0] = width;
         widths[1] = width / 2;
@@ -111,7 +111,7 @@
         formats[0] = MTLPixelFormatR8Unorm;
         formats[1] = MTLPixelFormatR8Unorm;
         formats[2] = MTLPixelFormatR8Unorm;
-    } else if (pixelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+    } else if (pixelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange || pixelFormat == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
         planes = 2;
         widths[0] = width;
         widths[1] = width / 2;
